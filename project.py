@@ -9,8 +9,15 @@ def report1(cursor):
     result += '   Which articles have been accessed the most?\n'
     result += '   Present this information as a sorted list\n'
     result += '   with the most popular article at the top.\n'
+    cursor.execute(('SELECT title, count(*) as views FROM articles '
+                    'JOIN log '
+                    'ON articles.slug = substring(log.path, 10) '
+                    'GROUP BY title '
+                    'ORDER BY views DESC '
+                    'LIMIT 3;'))
+    for idx, item in enumerate(cursor.fetchall()):
+        result += '      {}. {:35} {}views\n'.format(idx+1, item[0], item[1])
     result += '\n'
-
     print(result)
     return result
 
