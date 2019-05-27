@@ -3,12 +3,7 @@
 import psycopg2
 
 
-db_connection = None
-db_cursor = None
-
-
-
-def report1():
+def report1(cursor):
     result = ''
     result += '1. What are the most popular three articles of all time?\n'
     result += '   Which articles have been accessed the most?\n'
@@ -19,7 +14,7 @@ def report1():
     print(result)
     return result
 
-def report2():
+def report2(cursor):
     result = ''
     result += '2. Who are the most popular article authors of all time?\n'
     result += '   That is, when you sum up all of the articles each author\n'
@@ -31,7 +26,7 @@ def report2():
     print(result)
     return result
 
-def report3():
+def report3(cursor):
     result = ''
     result += '3. On which days did more than 1% of requests lead to errors?\n'
     result += '   The log table includes a column status that indicates the HTTP\n'
@@ -49,8 +44,8 @@ if __name__ == '__main__':
     db_cursor = db_connection.cursor()
 
     with open('result.txt', 'w') as resultfile:
-        resultfile.writelines(report1())
-        resultfile.writelines(report2())
-        resultfile.writelines(report3())
+        resultfile.writelines(report1(cursor=db_cursor))
+        resultfile.writelines(report2(cursor=db_cursor))
+        resultfile.writelines(report3(cursor=db_cursor))
 
     db_connection.close()
